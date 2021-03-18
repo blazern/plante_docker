@@ -1,5 +1,15 @@
 version: "3"
 services:
+  db:
+    build:
+      context: ./db
+      args:
+        - USER_PASSWORD=${DB_USER_PASSWORD:?db user password must be set}
+    networks:
+      - internal-network
+    volumes:
+      - ${DB_FILES_PATH:?db files path must be specified so that you never loose them}:/var/lib/postgresql/data
+
   server_app:
     build:
       context: ./server-app
@@ -14,6 +24,8 @@ services:
       - "8080:8080"
     volumes:
       - ${BINARY_PATH_APP:?path to rust binaries must be set}:/server_binaries/app
+    depends_on:
+      - db
     restart: always
 
 networks:
