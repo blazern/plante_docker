@@ -15,6 +15,9 @@ services:
       context: ./server-app
       args:
         - BINARY_PATH_APP=/server_binaries/app
+        - PSQL_HOSTNAME=db
+        - PSQL_PASSWORD=${DB_USER_PASSWORD:?db user password must be set}
+        - JWT_SECRET=${JWT_SECRET:?JWT secret must be set}
     networks:
       - internal-network
       - external-network
@@ -23,7 +26,7 @@ services:
       - "443:443"
       - "8080:8080"
     volumes:
-      - ${BINARY_PATH_APP:?path to rust binaries must be set}:/server_binaries/app
+      - ${BINARY_PATH_APP:?path to binary must be set}:/server_binaries/app
     depends_on:
       - db
     restart: always
