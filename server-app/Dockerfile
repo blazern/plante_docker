@@ -23,4 +23,4 @@ RUN echo "app config: " && cat config.json
 ENV BINARY_PATH_APP $BINARY_PATH_APP
 
 # Run tests and start the server app.
-CMD java -jar $BINARY_PATH_APP --config-path config.json
+CMD java -Xmx64m -XX:+UseContainerSupport -jar $BINARY_PATH_APP --config-path config.json
