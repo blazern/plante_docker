@@ -35,6 +35,20 @@ services:
         limits:
           memory: 128M
 
+  db_backupper:
+    build:
+      context: ./db-backupper
+      args:
+        - BACKUPS_DIR_PATH=/backups
+        - BACKUPS_HOUR_MINUTE=${BACKUPS_HOUR_MINUTE:?backups time must be set}
+        - PSQL_URL=postgresql://main_user:${DB_USER_PASSWORD}@db/main
+    networks:
+      - internal-network
+    volumes:
+      - ${BACKUPS_DIR_PATH:?path to dir for backups files}:/backups
+    depends_on:
+      - db
+
 networks:
   internal-network:
     driver: bridge

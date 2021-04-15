@@ -7,7 +7,10 @@ ARG PSQL_PASSWORD
 ARG JWT_SECRET
 
 # Test that all declared args are provided
-RUN test $BINARY_PATH_APP
+RUN test $BINARY_PATH_APP && \
+    test $PSQL_HOSTNAME && \
+    test $PSQL_PASSWORD && \
+    test $JWT_SECRET
 
 # Create live config
 RUN echo { >> config.json \
