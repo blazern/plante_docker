@@ -2,12 +2,13 @@ import argparse
 import logging
 import os
 import sys
-import time
+from time import sleep
 import subprocess
 
 from datetime import datetime
 from datetime import date
 from datetime import timedelta
+from datetime import time
 
 def check_call(cmd):
   logging.info('Executing cmd: {}\n'.format(cmd))
@@ -44,17 +45,17 @@ def main(argv):
     if sleep_time > 0:
       logging.info('Now: ({}), next backup time: ({}), sleeping for {} seconds'
         .format(now, next_backup_time, sleep_time))
-      time.sleep(sleep_time)
+      sleep(sleep_time)
 
     check_call('pg_dump --dbname={} > {}/backup_{}.bak'.format(
       options.psql_url,
       options.out_folder,
       datetime.now().strftime('%Y_%m_%d__%H_%M')))
 
-    logging.info('Now let\'s sleep for a minute because I\'m to lazy '
-                 + 'to fix infinite check_call calls which would happen '
-                 + 'now because a minute has not passed yet')
-    time.sleep(60)
+    tomorrow_start = datetime.combine(date.today(), time(0, 0)) + timedelta(days=1)
+    time_to_sleep = tomorrow_start - datetime.now()
+    logging.info('Let\'s sleep {} minutes until midnight'.format(time_to_sleep.seconds/60))
+    sleep(time_to_sleep.seconds)
 
 if __name__ == '__main__':
   sys.exit(main(sys.argv[1:]))
