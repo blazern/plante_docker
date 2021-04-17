@@ -53,7 +53,7 @@ def main(argv):
       datetime.now().strftime('%Y_%m_%d__%H_%M')))
 
     tomorrow_start = datetime.combine(date.today(), time(0, 0)) + timedelta(days=1)
-    time_to_sleep = tomorrow_start - datetime.now()
+    time_to_sleep = (tomorrow_start - datetime.now()) + 1
     logging.info('Let\'s sleep {} minutes until midnight'.format(time_to_sleep.seconds/60))
     sleep(time_to_sleep.seconds)
 
