@@ -17,6 +17,10 @@ services:
         - BINARY_PATH_APP=/server_binaries/app
         - PSQL_HOSTNAME=db
         - PSQL_PASSWORD=${DB_USER_PASSWORD:?db user password must be set}
+        - OSM_PROD_USER=${OSM_PROD_USER:?OSM prod user must be set}
+        - OSM_PROD_PASSWORD=${OSM_PROD_PASSWORD:?OSM prod user password must be set}
+        - OSM_TESTING_USER=${OSM_TESTING_USER:?OSM testing user must be set}
+        - OSM_TESTING_PASSWORD=${OSM_TESTING_PASSWORD:?OSM testing user password must be set}
         - JWT_SECRET=${JWT_SECRET:?JWT secret must be set}
     networks:
       - internal-network
