@@ -2,6 +2,7 @@ FROM openjdk:16-jdk
 
 # Declare all expected args
 ARG BINARY_PATH_APP
+ARG IOS_PRIVATE_KEY_PATH
 ARG PSQL_HOSTNAME
 ARG PSQL_PASSWORD
 ARG OSM_PROD_USER
@@ -12,6 +13,7 @@ ARG JWT_SECRET
 
 # Test that all declared args are provided
 RUN test $BINARY_PATH_APP && \
+    test $IOS_PRIVATE_KEY_PATH && \
     test $PSQL_HOSTNAME && \
     test $PSQL_PASSWORD && \
     test $OSM_PROD_USER && \
@@ -30,7 +32,8 @@ RUN echo { >> config.json \
   && echo \"osm_testing_user\":\"$OSM_TESTING_USER\", >> config.json \
   && echo \"osm_testing_password\":\"$OSM_TESTING_PASSWORD\", >> config.json \
   && echo \"db_connection_attempts_timeout_seconds\": 180, >> config.json \
-  && echo \"jwt_secret\":\"$JWT_SECRET\" >> config.json \
+  && echo \"jwt_secret\":\"$JWT_SECRET\", >> config.json \
+  && echo \"ios_backend_private_key_file_path\":\"$IOS_PRIVATE_KEY_PATH\" >> config.json \
   && echo } >> config.json
 RUN echo "app config: " && cat config.json
 
