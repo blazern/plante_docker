@@ -2,6 +2,7 @@ FROM openjdk:16-jdk
 
 # Declare all expected args
 ARG BINARY_PATH_APP
+ARG LOGS_DIR
 ARG IOS_PRIVATE_KEY_PATH
 ARG PSQL_HOSTNAME
 ARG PSQL_PASSWORD
@@ -13,6 +14,7 @@ ARG JWT_SECRET
 
 # Test that all declared args are provided
 RUN test $BINARY_PATH_APP && \
+    test $LOGS_DIR && \
     test $IOS_PRIVATE_KEY_PATH && \
     test $PSQL_HOSTNAME && \
     test $PSQL_PASSWORD && \
@@ -37,8 +39,10 @@ RUN echo { >> config.json \
   && echo } >> config.json
 RUN echo "app config: " && cat config.json
 
-# Declare env vars used in CMD
+# Declare env vars
 ENV BINARY_PATH_APP $BINARY_PATH_APP
+# Used by the Ktor library
+ENV LOG_DEST $LOGS_DIR
 
 # Run tests and start the server app.
 CMD java -jar $BINARY_PATH_APP --config-path config.json

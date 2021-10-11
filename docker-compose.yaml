@@ -15,6 +15,7 @@ services:
       context: ./server-app
       args:
         - BINARY_PATH_APP=/server_binaries/app
+        - LOGS_DIR=/logs
         - IOS_PRIVATE_KEY_PATH=/ios_private_key
         - PSQL_HOSTNAME=db
         - PSQL_PASSWORD=${DB_USER_PASSWORD:?db user password must be set}
@@ -30,6 +31,7 @@ services:
       - "127.0.0.1:8080:8080"
     volumes:
       - ${BINARY_PATH_APP:?path to binary must be set}:/server_binaries/app
+      - ${LOGS_DIR:?path to logs dir of server must be set}:/logs
       - ${IOS_PRIVATE_KEY_PATH:?path to iOS private key must be set}:/ios_private_key
     depends_on:
       - db
