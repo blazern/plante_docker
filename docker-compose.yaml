@@ -23,6 +23,10 @@ services:
         - OSM_PROD_PASSWORD=${OSM_PROD_PASSWORD:?OSM prod user password must be set}
         - OSM_TESTING_USER=${OSM_TESTING_USER:?OSM testing user must be set}
         - OSM_TESTING_PASSWORD=${OSM_TESTING_PASSWORD:?OSM testing user password must be set}
+        - OFF_PROD_USER=${OFF_PROD_USER:?OFF prod user must be set}
+        - OFF_PROD_PASSWORD=${OFF_PROD_PASSWORD:?OFF prod user password must be set}
+        - OFF_TESTING_USER=${OFF_TESTING_USER:?OFF testing user must be set}
+        - OFF_TESTING_PASSWORD=${OFF_TESTING_PASSWORD:?OFF testing user password must be set}
         - JWT_SECRET=${JWT_SECRET:?JWT secret must be set}
     networks:
       - internal-network

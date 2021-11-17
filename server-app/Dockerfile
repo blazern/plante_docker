@@ -10,6 +10,10 @@ ARG OSM_PROD_USER
 ARG OSM_PROD_PASSWORD
 ARG OSM_TESTING_USER
 ARG OSM_TESTING_PASSWORD
+ARG OFF_PROD_USER
+ARG OFF_PROD_PASSWORD
+ARG OFF_TESTING_USER
+ARG OFF_TESTING_PASSWORD
 ARG JWT_SECRET
 
 # Test that all declared args are provided
@@ -22,6 +26,10 @@ RUN test $BINARY_PATH_APP && \
     test $OSM_PROD_PASSWORD && \
     test $OSM_TESTING_USER && \
     test $OSM_TESTING_PASSWORD && \
+    test $OFF_PROD_USER && \
+    test $OFF_PROD_PASSWORD && \
+    test $OFF_TESTING_USER && \
+    test $OFF_TESTING_PASSWORD && \
     test $JWT_SECRET
 
 # Create live config
@@ -33,6 +41,10 @@ RUN echo { >> config.json \
   && echo \"osm_prod_password\":\"$OSM_PROD_PASSWORD\", >> config.json \
   && echo \"osm_testing_user\":\"$OSM_TESTING_USER\", >> config.json \
   && echo \"osm_testing_password\":\"$OSM_TESTING_PASSWORD\", >> config.json \
+  && echo \"off_prod_user\":\"$OFF_PROD_USER\", >> config.json \
+  && echo \"off_prod_password\":\"$OFF_PROD_PASSWORD\", >> config.json \
+  && echo \"off_testing_user\":\"$OFF_TESTING_USER\", >> config.json \
+  && echo \"off_testing_password\":\"$OFF_TESTING_PASSWORD\", >> config.json \
   && echo \"db_connection_attempts_timeout_seconds\": 180, >> config.json \
   && echo \"jwt_secret\":\"$JWT_SECRET\", >> config.json \
   && echo \"ios_backend_private_key_file_path\":\"$IOS_PRIVATE_KEY_PATH\" >> config.json \
