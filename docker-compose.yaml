@@ -28,6 +28,7 @@ services:
         - OFF_TESTING_USER=${OFF_TESTING_USER:?OFF testing user must be set}
         - OFF_TESTING_PASSWORD=${OFF_TESTING_PASSWORD:?OFF testing user password must be set}
         - JWT_SECRET=${JWT_SECRET:?JWT secret must be set}
+        - METRICS_ENDPOINT=${METRICS_ENDPOINT:?a random METRICS_ENDPOINT must be set}
     networks:
       - internal-network
       - external-network
@@ -58,6 +59,37 @@ services:
       - ${BACKUPS_DIR_PATH:?path to dir for backups files}:/backups
     depends_on:
       - db
+
+  # https://medium.com/@math21/how-to-monitor-a-ktor-server-using-grafana-bab54a9ac0dc
+  prometheus:
+    build:
+      context: ./prometheus
+      args:
+        - METRICS_ENDPOINT=${METRICS_ENDPOINT:?a random METRICS_ENDPOINT must be set}
+    restart: always
+    ports:
+      - "3570:9090"
+    command: --config.file=/etc/prometheus/prometheus.yml --log.level=debug
+    networks:
+      - internal-network
+    links:
+      - server_app
+
+  # https://medium.com/@math21/how-to-monitor-a-ktor-server-using-grafana-bab54a9ac0dc
+  grafana:
+    build:
+      context: ./grafana
+      args:
+        - GRAFANA_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?grafana admin password must be set}
+    ports:
+      - 3000:3000
+    user: "104"
+    networks:
+      - internal-network
+      - external-network
+    links:
+      - server_app
+      - prometheus
 
 networks:
   internal-network:

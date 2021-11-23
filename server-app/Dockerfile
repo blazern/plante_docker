@@ -15,6 +15,7 @@ ARG OFF_PROD_PASSWORD
 ARG OFF_TESTING_USER
 ARG OFF_TESTING_PASSWORD
 ARG JWT_SECRET
+ARG METRICS_ENDPOINT
 
 # Test that all declared args are provided
 RUN test $BINARY_PATH_APP && \
@@ -30,7 +31,8 @@ RUN test $BINARY_PATH_APP && \
     test $OFF_PROD_PASSWORD && \
     test $OFF_TESTING_USER && \
     test $OFF_TESTING_PASSWORD && \
-    test $JWT_SECRET
+    test $JWT_SECRET && \
+    test $METRICS_ENDPOINT
 
 # Create live config
 RUN echo { >> config.json \
@@ -47,6 +49,7 @@ RUN echo { >> config.json \
   && echo \"off_testing_password\":\"$OFF_TESTING_PASSWORD\", >> config.json \
   && echo \"db_connection_attempts_timeout_seconds\": 180, >> config.json \
   && echo \"jwt_secret\":\"$JWT_SECRET\", >> config.json \
+  && echo \"metrics_endpoint\":\"$METRICS_ENDPOINT\", >> config.json \
   && echo \"ios_backend_private_key_file_path\":\"$IOS_PRIVATE_KEY_PATH\" >> config.json \
   && echo } >> config.json
 RUN echo "app config: " && cat config.json
