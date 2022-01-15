@@ -14,6 +14,10 @@ ARG OFF_PROD_USER
 ARG OFF_PROD_PASSWORD
 ARG OFF_TESTING_USER
 ARG OFF_TESTING_PASSWORD
+ARG AWS_S3_BUCKET_NAME
+ARG AWS_S3_REGION
+ARG AWS_S3_ACCESS_KEY_ID
+ARG AWS_S3_SECRET_ACCESS_KEY
 ARG JWT_SECRET
 ARG METRICS_ENDPOINT
 
@@ -31,6 +35,10 @@ RUN test $BINARY_PATH_APP && \
     test $OFF_PROD_PASSWORD && \
     test $OFF_TESTING_USER && \
     test $OFF_TESTING_PASSWORD && \
+    test $AWS_S3_BUCKET_NAME && \
+    test $AWS_S3_REGION && \
+    test $AWS_S3_ACCESS_KEY_ID && \
+    test $AWS_S3_SECRET_ACCESS_KEY && \
     test $JWT_SECRET && \
     test $METRICS_ENDPOINT
 
@@ -47,6 +55,10 @@ RUN echo { >> config.json \
   && echo \"off_prod_password\":\"$OFF_PROD_PASSWORD\", >> config.json \
   && echo \"off_testing_user\":\"$OFF_TESTING_USER\", >> config.json \
   && echo \"off_testing_password\":\"$OFF_TESTING_PASSWORD\", >> config.json \
+  && echo \"aws_s3_bucket_name\":\"$AWS_S3_BUCKET_NAME\", >> config.json \
+  && echo \"aws_s3_region\":\"$AWS_S3_REGION\", >> config.json \
+  && echo \"aws_s3_access_key_id\":\"$AWS_S3_ACCESS_KEY_ID\", >> config.json \
+  && echo \"aws_s3_secret_access_key\":\"$AWS_S3_SECRET_ACCESS_KEY\", >> config.json \
   && echo \"db_connection_attempts_timeout_seconds\": 180, >> config.json \
   && echo \"jwt_secret\":\"$JWT_SECRET\", >> config.json \
   && echo \"metrics_endpoint\":\"$METRICS_ENDPOINT\", >> config.json \
